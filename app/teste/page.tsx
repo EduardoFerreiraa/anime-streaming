@@ -1,18 +1,33 @@
-import Image from "next/image";
-
-type Anime = {
-  mal_id: number;
-  title: string;
-  episodes: number | null;
-  images: {
-    jpg: {
-      image_url: string;
-    };
-  };
-};
-
 export default async function Teste() {
-  const resposta = await fetch("https://api.jikan.moe/v4/top/anime");
+  const query = `
+    query {
+      Page(perPage: 10) {
+        media(type: ANIME) {
+          id
+          title {
+            romaji
+          }
+          episodes
+          season
+          seasonYear
+          coverImage {
+            large
+          }
+        }
+      }
+    }
+  `;
+
+  const resposta = await fetch("https://graphql.anilist.co", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      query,
+    }),
+  });
 
   const dados = await resposta.json();
 

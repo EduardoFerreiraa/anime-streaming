@@ -1,42 +1,54 @@
 import Bg_anime from "../ui/bg_anime";
 import Hero from "../ui/hero";
 import AnimeCard from "../ui/animeCard";
+import { getTopAnimes } from "../../lib/jikan";
 
-type Anime = {
-  mal_id: number;
-  title: string;
-  episodes: number | null;
-  images: {
-    jpg: {
-      image_url: string;
-    };
-  };
+const SEASON_PT: Record<string, string> = {
+  winter: "Inverno",
+  spring: "Primavera",
+  summer: "Verão",
+  fall: "Outono",
 };
 
-export default async function Main() {
-  const resposta = await fetch("https://api.jikan.moe/v4/top/anime");
+function formatarTemporada(season: string | null, year: number | null) {
+  if (!season || !year) return "N/A";
+  return `${SEASON_PT[season] ?? season} ${year}`;
+}
 
-  const dados: { data: Anime[] } = await resposta.json();
+export default async function Main() {
+  let animes: Awaited<ReturnType<typeof getTopAnimes>> = [];
+
+  try {
+    animes = await getTopAnimes(10);
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <main>
       <Bg_anime />
       <Hero />
 
-      <section className="absolute bg-zinc-950 w-full p-10">
-        <h2 className="text-3xl mb-5 font-black">Em alta</h2>
-
-        <div className="flex items-start gap-5">
-          {dados.data?.map((anime) => (
-            <AnimeCard
-              key={anime.mal_id}
-              nome={anime.title}
-              episodio={String(anime.episodes)}
-              temporada="?"
-              imagem={anime.images.jpg.image_url}
-            />
-          ))}
+      <section className="absolute bg-zinc-950 p-10 shadow-[0_-40px_50px_15px_rgba(9,9,11,0.95)]">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-1.5 h-8 bg-orange-500 rounded-full" />
+          <h2 className="text-3xl font-black">Em alta</h2>
         </div>
+        {animes.length === 0 ? (
+          <p>Não foi possível carregar os animes no momento.</p>
+        ) : (
+          <div className="flex items-start gap-5">
+            {animes.map((anime) => (
+              <AnimeCard
+                key={anime.mal_id}
+                nome={anime.title}
+                episodio={String(anime.episodes ?? "N/A")}
+                temporada={formatarTemporada(anime.season, anime.year)}
+                imagem={anime.images.jpg.large_image_url}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
