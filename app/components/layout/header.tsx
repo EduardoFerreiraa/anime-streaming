@@ -36,7 +36,7 @@ export default function Header() {
           name="buscar"
           id="buscarAnime"
           placeholder="Buscar anime..."
-          className="border border-white rounded-2xl mr-5 px-7 py-2"
+          className="border border-zinc-800 outline-none bg-zinc-900 rounded-2xl mr-5 px-7 py-2"
         />
         <button className="bg-zinc-900 rounded-2xl mr-10 p-2 pr-5 pl-5 cursor-pointer hover:bg-white hover:text-black transition">
           <Link href="/entrar">Entrar</Link>

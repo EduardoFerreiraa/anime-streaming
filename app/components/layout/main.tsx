@@ -29,7 +29,7 @@ export default async function Main() {
       <Bg_anime />
       <Hero />
 
-      <section className="absolute bg-zinc-950 p-10 shadow-[0_-40px_50px_15px_rgba(9,9,11,0.95)]">
+      <section className="absolute bg-zinc-950 p-10 shadow-">
         <div className="flex items-center gap-3 mb-5">
           <div className="w-1.5 h-8 bg-orange-500 rounded-full" />
           <h2 className="text-3xl font-black">Em alta</h2>

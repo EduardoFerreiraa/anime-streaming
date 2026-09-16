@@ -4,26 +4,36 @@ export type Anime = {
     romaji: string;
   };
   episodes: number | null;
-  season: "WINTER" | "SPRING" | "SUMMER" | "FALL" | null;
+  season: string | null;
   seasonYear: number | null;
   coverImage: {
     large: string;
   };
 };
 
-type AniListResponse = {
+type AniListPageResponse = {
   data: {
     Page: {
+      pageInfo: {
+        hasNextPage: boolean;
+        currentPage: number;
+        lastPage: number;
+      };
       media: Anime[];
     };
   };
   errors?: { message: string }[];
 };
 
-const QUERY = `
-  query ($perPage: Int) {
-    Page(perPage: $perPage) {
-      media(type: ANIME, sort: TRENDING_DESC) {
+const LIST_QUERY = `
+  query ($page: Int, $perPage: Int) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        hasNextPage
+        currentPage
+        lastPage
+      }
+      media(type: ANIME, sort: POPULARITY_DESC) {
         id
         title {
           romaji
@@ -39,7 +49,7 @@ const QUERY = `
   }
 `;
 
-export async function getTrendingAnimes(perPage = 10): Promise<Anime[]> {
+export async function getAnimeList(page = 1, perPage = 20) {
   const resposta = await fetch("https://graphql.anilist.co", {
     method: "POST",
     headers: {
@@ -47,10 +57,9 @@ export async function getTrendingAnimes(perPage = 10): Promise<Anime[]> {
       Accept: "application/json",
     },
     body: JSON.stringify({
-      query: QUERY,
-      variables: { perPage },
+      query: LIST_QUERY,
+      variables: { page, perPage },
     }),
-    // cacheia por 1 hora — ajuste conforme sua necessidade
     next: { revalidate: 3600 },
   });
 
@@ -58,11 +67,11 @@ export async function getTrendingAnimes(perPage = 10): Promise<Anime[]> {
     throw new Error(`Erro ao buscar animes: ${resposta.status}`);
   }
 
-  const dados: AniListResponse = await resposta.json();
+  const dados: AniListPageResponse = await resposta.json();
 
   if (dados.errors?.length) {
     throw new Error(dados.errors[0].message);
   }
 
-  return dados.data.Page.media;
+  return dados.data.Page;
 }
