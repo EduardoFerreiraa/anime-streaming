@@ -51,7 +51,7 @@ export default async function Categorias() {
 
         <div className="flex justify-between pt-10">
           <h2 className="text-3xl font-black">Todos os animes</h2>
-          <button className="bg-zinc-900 rounded-2xl mr-10 p-3 px-7 cursor-pointer hover:bg-white hover:text-black transition">
+          <button className="bg-zinc-900 rounded-2xl mr-2 p-3 px-7 cursor-pointer hover:bg-white hover:text-black transition">
             Mais populares
           </button>
         </div>

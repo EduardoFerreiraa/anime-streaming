@@ -1,6 +1,6 @@
 import Bg_anime from "../ui/bg_anime";
 import Hero from "../ui/hero";
-import AnimeCard from "../ui/animeCard";
+import AnimeCarousel from "../ui/animeCarousel";
 import { getTopAnimes } from "../../lib/jikan";
 
 const SEASON_PT: Record<string, string> = {
@@ -11,7 +11,10 @@ const SEASON_PT: Record<string, string> = {
 };
 
 function formatarTemporada(season: string | null, year: number | null) {
-  if (!season || !year) return "N/A";
+  if (!season || !year) {
+    return "N/A";
+  }
+
   return `${SEASON_PT[season] ?? season} ${year}`;
 }
 
@@ -24,31 +27,31 @@ export default async function Main() {
     console.error(error);
   }
 
+  const animesFormatados = animes.map((anime) => ({
+    mal_id: anime.mal_id,
+    title: anime.title,
+    episodes: anime.episodes,
+    temporada: formatarTemporada(anime.season, anime.year),
+    imagem: anime.images.jpg.large_image_url,
+  }));
+
   return (
     <main>
       <Bg_anime />
+
       <Hero />
 
-      <section className="absolute bg-zinc-950 p-10 shadow-">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-1.5 h-8 bg-orange-500 rounded-full" />
+      <section className="relative bg-zinc-950 p-10">
+        <div className="mb-5 flex items-center gap-3">
+          <div className="h-8 w-1.5 rounded-full bg-orange-500" />
+
           <h2 className="text-3xl font-black">Em alta</h2>
         </div>
-        {animes.length === 0 ? (
+
+        {animesFormatados.length === 0 ? (
           <p>Não foi possível carregar os animes no momento.</p>
         ) : (
-          <div className="flex items-start gap-5 overflow-x-auto">
-            {animes.map((anime) => (
-              <div key={anime.mal_id} className="w-72 shrink-0">
-                <AnimeCard
-                  nome={anime.title}
-                  episodio={String(anime.episodes ?? "N/A")}
-                  temporada={formatarTemporada(anime.season, anime.year)}
-                  imagem={anime.images.jpg.large_image_url}
-                />
-              </div>
-            ))}
-          </div>
+          <AnimeCarousel animes={animesFormatados} />
         )}
       </section>
     </main>
