@@ -8,7 +8,7 @@ type Anime = {
   mal_id: number;
   title: string;
   episodes: number | null;
-  temporada: string;
+  tipo: string;
   imagem: string;
 };
 
@@ -28,9 +28,7 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
 
   function verificarScroll() {
     const carousel = carouselRef.current;
-
     if (!carousel) return;
-
     setCanScrollLeft(carousel.scrollLeft > 0);
 
     const chegouNoFinal =
@@ -41,13 +39,11 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
 
   useEffect(() => {
     verificarScroll();
-
     const carousel = carouselRef.current;
 
     if (!carousel) return;
 
     carousel.addEventListener("scroll", verificarScroll);
-
     window.addEventListener("resize", verificarScroll);
 
     return () => {
@@ -75,9 +71,7 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
     if (!carouselRef.current) return;
 
     mouseDown.current = true;
-
     startX.current = event.pageX - carouselRef.current.offsetLeft;
-
     scrollLeft.current = carouselRef.current.scrollLeft;
   }
 
@@ -126,11 +120,11 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
         onMouseMove={handleMouseMove}
       >
         {animes.map((anime) => (
-          <div key={anime.mal_id} className="w-64 shrink-0">
+          <div key={anime.mal_id} className="w-74 shrink-0">
             <AnimeCard
               nome={anime.title}
               episodio={String(anime.episodes ?? "N/A")}
-              temporada={anime.temporada}
+              tipo={anime.tipo}
               imagem={anime.imagem}
             />
           </div>

@@ -4,14 +4,14 @@ import { Play } from "lucide-react";
 type AnimeCardProps = {
   nome: string;
   episodio: string;
-  temporada: string;
+  tipo: string;
   imagem: string;
 };
 
 export default function AnimeCard({
   nome,
   episodio,
-  temporada,
+  tipo,
   imagem,
 }: AnimeCardProps) {
   return (
@@ -33,7 +33,7 @@ export default function AnimeCard({
         <h3 className="truncate text-[18px] font-black">{nome}</h3>
 
         <p className="text-[16px] text-zinc-400">
-          Episódio {episodio} &nbsp;•&nbsp; {temporada}
+          Episódio {episodio} &nbsp;•&nbsp; {tipo}
         </p>
       </div>
     </div>
