@@ -37,15 +37,16 @@ export default async function Main() {
         {animes.length === 0 ? (
           <p>Não foi possível carregar os animes no momento.</p>
         ) : (
-          <div className="flex items-start gap-5">
+          <div className="flex items-start gap-5 overflow-x-auto">
             {animes.map((anime) => (
-              <AnimeCard
-                key={anime.mal_id}
-                nome={anime.title}
-                episodio={String(anime.episodes ?? "N/A")}
-                temporada={formatarTemporada(anime.season, anime.year)}
-                imagem={anime.images.jpg.large_image_url}
-              />
+              <div key={anime.mal_id} className="w-72 shrink-0">
+                <AnimeCard
+                  nome={anime.title}
+                  episodio={String(anime.episodes ?? "N/A")}
+                  temporada={formatarTemporada(anime.season, anime.year)}
+                  imagem={anime.images.jpg.large_image_url}
+                />
+              </div>
             ))}
           </div>
         )}

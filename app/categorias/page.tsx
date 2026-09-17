@@ -23,8 +23,8 @@ export default async function Categorias() {
   return (
     <div>
       <Header />
-      <section className="pt-30 px-17">
-        <h1 className="text-2xl font-bold text-orange-500 uppercase">
+      <section className="pt-30 px-30">
+        <h1 className="text-[20px] font-bold text-orange-500 uppercase">
           Categorias
         </h1>
         <p className="text-5xl font-bold pt-2">Explore por Genêro</p>
@@ -49,7 +49,12 @@ export default async function Categorias() {
           </ul>
         </nav>
 
-        <h2 className="text-3xl font-black pt-10">Todos os animes</h2>
+        <div className="flex justify-between pt-10">
+          <h2 className="text-3xl font-black">Todos os animes</h2>
+          <button className="bg-zinc-900 rounded-2xl mr-10 p-3 px-7 cursor-pointer hover:bg-white hover:text-black transition">
+            Mais populares
+          </button>
+        </div>
 
         {animes.length === 0 ? (
           <p className="pt-5">

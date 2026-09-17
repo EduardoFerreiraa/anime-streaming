@@ -1,11 +1,36 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 100);
+    }
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const linkStyle =
     "font-semibold hover:bg-zinc-900 p-2 pl-4 pr-4 rounded-2xl transition";
 
   return (
-    <header className="flex justify-between items-center p-5 fixed w-full z-10 bg-linear-to-b from-black/70 to-transparent">
+    <header
+      className={`flex justify-between items-center p-5 fixed w-full z-10 bg-linear-to-b from-black/70 to-transparent
+      ${
+        scrolled
+          ? "transition-all duration-400 bg-zinc-950/95 backdrop-blud-md"
+          : "transition-all duration-400 br-linear-to-b from-black/70 to-transparent"
+      }
+    `}
+    >
       <div className="ml-10 flex items-center gap-15">
         <h1 className="text-3xl text-orange-500">
           <Link href="/">
