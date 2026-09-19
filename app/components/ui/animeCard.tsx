@@ -1,29 +1,46 @@
-import onePiece from "../../../public/img/fund-anime2.png";
+import Link from "next/link";
 import Image from "next/image";
+import { Play } from "lucide-react";
 
-export default function AnimeCard() {
-  const cardAnime =
-    "relative cursor-pointer p-3 rounded-2xl transition-all duration-200 hover:scale-102 hover:bg-zinc-800";
+type AnimeCardProps = {
+  id: number;
+  nome: string;
+  episodio: string;
+  tipo: string;
+  imagem: string;
+};
 
+export default function AnimeCard({
+  id,
+  nome,
+  episodio,
+  tipo,
+  imagem,
+}: AnimeCardProps) {
   return (
-    <section className="absolute bg-zinc-950 w-full p-10">
-      <h2 className="text-3xl mb-5 font-black">Em alta</h2>
+    <Link href={`/anime/${id}`}>
+      <div className="group w-full cursor-pointer rounded-2xl p-2 transition-all duration-200 hover:bg-zinc-800">
+        <div className="relative aspect-2/3 w-full overflow-hidden rounded-xl">
+          <Image
+            src={imagem}
+            alt={nome}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
 
-      <div className="flex items-start gap-5">
-        <div className={cardAnime}>
-          <div className="w-75 h-95">
-            <Image
-              src={onePiece}
-              alt="One Piece"
-              className="w-full h-full object-cover rounded-2xlxl rounded-2xl"
-            />
-          </div>
-          <div className="w-full rounded-2xl p-3 absolute bottom-0 left-0 bg-linear-to-t from-black/90 to-transparen">
-            <h3>One Piece</h3>
-            <p>Episódio 1123&nbsp; •&nbsp; T20</p>
+          <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/50 group-hover:opacity-100">
+            <Play className="h-12 w-12 fill-white text-white" />
           </div>
         </div>
+
+        <div className="pt-3">
+          <h3 className="truncate text-[18px] font-black">{nome}</h3>
+
+          <p className="text-[16px] text-zinc-400">
+            Episódio {episodio} &nbsp;•&nbsp; {tipo}
+          </p>
+        </div>
       </div>
-    </section>
+    </Link>
   );
 }

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import onePiece from "../../../public/img/fund-anime2.png";
+import onePiece from "../../../public/img/fund-anime.jpg";
 
 export default function Bg_anime() {
   return (
@@ -13,3 +13,4 @@ export default function Bg_anime() {
     </div>
   );
 }
+
