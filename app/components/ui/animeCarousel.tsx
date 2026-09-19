@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import AnimeCard from "./animeCard";
 
 type Anime = {
-  mal_id: number;
-  title: string;
-  episodes: number | null;
+  id: number;
+  nome: string;
+  episodio: number;
   tipo: string;
   imagem: string;
 };
@@ -28,7 +29,9 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
 
   function verificarScroll() {
     const carousel = carouselRef.current;
+
     if (!carousel) return;
+
     setCanScrollLeft(carousel.scrollLeft > 0);
 
     const chegouNoFinal =
@@ -39,6 +42,7 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
 
   useEffect(() => {
     verificarScroll();
+
     const carousel = carouselRef.current;
 
     if (!carousel) return;
@@ -48,7 +52,6 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
 
     return () => {
       carousel.removeEventListener("scroll", verificarScroll);
-
       window.removeEventListener("resize", verificarScroll);
     };
   }, []);
@@ -71,6 +74,7 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
     if (!carouselRef.current) return;
 
     mouseDown.current = true;
+
     startX.current = event.pageX - carouselRef.current.offsetLeft;
     scrollLeft.current = carouselRef.current.scrollLeft;
   }
@@ -84,14 +88,11 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
   }
 
   function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
-    if (!mouseDown.current || !carouselRef.current) {
-      return;
-    }
+    if (!mouseDown.current || !carouselRef.current) return;
 
     event.preventDefault();
 
     const x = event.pageX - carouselRef.current.offsetLeft;
-
     const distancia = (x - startX.current) * 0.8;
 
     carouselRef.current.scrollLeft = scrollLeft.current - distancia;
@@ -120,10 +121,11 @@ export default function AnimeCarousel({ animes }: AnimeCarouselProps) {
         onMouseMove={handleMouseMove}
       >
         {animes.map((anime) => (
-          <div key={anime.mal_id} className="w-74 shrink-0">
+          <div key={anime.id} className="w-74 shrink-0">
             <AnimeCard
-              nome={anime.title}
-              episodio={String(anime.episodes ?? "N/A")}
+              id={anime.id}
+              nome={anime.nome}
+              episodio={String(anime.episodio)}
               tipo={anime.tipo}
               imagem={anime.imagem}
             />
